@@ -87,8 +87,30 @@ export default async function ProductPage({ params }) {
     `Hi, I'm interested in ${product.name} (${formatPrice(product.price_cents)})`
   )}`;
 
+    const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description,
+    image: `${SITE_URL}${product.image_url}`,
+    category: product.category,
+    offers: {
+      "@type": "Offer",
+      price: (product.price_cents / 100).toFixed(2),
+      priceCurrency: "USD",
+      availability: product.in_stock
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
+      url: `${SITE_URL}/products/${product.slug}`,
+    },
+  };
+
   return (
     <main className="mx-auto max-w-5xl px-4 py-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
         <nav className="mb-6 text-sm text-neutral-500">
             <Link href="/" className="hover:underline">Home</Link>
             <span className="mx-2">/</span>

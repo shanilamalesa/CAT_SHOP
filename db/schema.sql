@@ -5,7 +5,7 @@ CREATE TABLE products (
   description TEXT,
   price_cents INTEGER NOT NULL,
   image_url TEXT,
-  in_stock INTEGER NOT NULL DEFAULT 0,
+  in_stock BOOLEAN NOT NULL DEFAULT 0,
   category TEXT NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );

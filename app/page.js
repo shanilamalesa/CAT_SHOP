@@ -25,11 +25,11 @@ export const metadata = {
   },
 };
 
-async function getFeatured() {
+
+async function getNewArrivals() {
   const { rows } = await pool.query(
     `SELECT slug, name, price_cents, image_url
      FROM products
-     WHERE in_stock = true
      ORDER BY created_at DESC
      LIMIT 4`
   );
@@ -44,7 +44,7 @@ function formatPrice(cents) {
 }
 
 export default async function HomePage() {
-  const featured = await getFeatured();
+  const newArrivals = await getNewArrivals();
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-8">
@@ -66,12 +66,7 @@ export default async function HomePage() {
           >
             Shop all products
           </Link>
-          <Link
-            href="/about"
-            className="w-full rounded-xl border border-neutral-300 px-6 py-3 font-medium text-neutral-900 transition hover:bg-neutral-100 sm:w-auto"
-          >
-            Our story
-          </Link>
+        
         </div>
       </section>
 
@@ -92,16 +87,18 @@ export default async function HomePage() {
         </ul>
       </section>
 
+      
+
       <section className="mt-16">
         <div className="flex items-baseline justify-between">
-          <h2 className="text-xl font-semibold text-neutral-900">Featured</h2>
+          <h2 className="text-xl font-semibold text-neutral-900">New Arrivals</h2>
           <Link href="/products" className="text-sm text-neutral-600 hover:underline">
             View all
           </Link>
         </div>
 
         <ul className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {featured.map((item) => (
+          {newArrivals.map((item) => (
             <li key={item.slug}>
               <Link
                 href={`/products/${item.slug}`}
